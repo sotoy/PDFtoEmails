@@ -4,21 +4,21 @@ import os
 
 emails = []
 
-directory = r'//nas4/aiiaPublic/sotiris/pdfs with mails/'
+directory = r'Path/to/folder/'
 
 
-for dirpath, dirnames, filenames in os.walk(directory):
+for dirpath, dirnames, filenames in os.walk(directory): #it searches through the subfolders as well.
     for filename in [f for f in filenames if f.endswith(".pdf")]:
         filepath = os.path.join(directory, dirpath, filename)
         print("File "+filepath+" readed!")
         raw = parser.from_file(filepath)
         content = str(raw['content'].strip().encode('utf-8', errors='ignore'))
+        
+        #this regular expression matches all standard emails format plus {name1, name2, ...namen}@something.egg format.
         match = re.findall(r'[\w\.-]+@[\w\.-]+\.[\w\.-]+|{[\w\., -]+}@[\w\.-]+\.[\w\.-]+', content) #[\w\.-]+@[\w\.-]+    #[\w\.-]+@[\w\.-]+|{[\w\., -]+}@[\w\.-]+
         print(match)
         emails.extend(match)
         
-
-#emails = ['asdfas@adpsfo.ger','asdf@ga.hot','{afdas,asdfas,df}@agg.egg','{malakas, orestis}@mamama.fs']
 print(emails)
 
 emails_corrected = []
